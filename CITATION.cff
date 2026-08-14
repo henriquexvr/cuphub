@@ -1,0 +1,31 @@
+cff-version: 1.0.1
+message: Please cite this software using these metadata.
+title: CupHub
+authors:
+  - family-names: Mendes Pereira
+    given-names: Arthur 
+  - family-names: Almeida Pinhão
+    given-names: Gabriel 
+  - family-names: Carvalho Ferreira Pinheiro
+    given-names: Gustavo  
+  - family-names: Caldeira Assis Xavier
+    given-names: Henrique  
+  - family-names: Guimarães Pós
+    given-names: Lucas  
+  - family-names: Gonçalvez Lopes
+    given-names: Pedro Luis 
+  - name-suffix: Professora 
+    affiliation: PUC Minas
+    family-names: Gomes Amaral
+    given-names: Cleia Marcia 
+  - name-suffix: Professora
+    affiliation: PUC Minas
+    family-names: Ribeiro de Souza
+    given-names: Joana Gabriela
+keywords:
+  -  gerenciamento de torneios
+  -  gestão de torneio
+repository-code: https://github.com/ICEI-PUC-Minas-PPLES-TI/plf-es-2026-1-ti2-1381100-cuphub
+license: CC-BY-4.0
+version: 1.0.0
+date-released: 2026-06-30

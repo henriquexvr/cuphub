@@ -1,0 +1,8 @@
+target/
+.idea/
+.git/
+*.iml
+HELP.md
+# nunca leve segredos de desenvolvimento pra dentro da imagem
+**/application.properties
+**/application-local.properties

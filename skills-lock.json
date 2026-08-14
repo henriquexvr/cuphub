@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "cuphub-process-documentation": {
+      "source": "thumendes/cuphub-skills",
+      "sourceType": "github",
+      "skillPath": "skills/cuphub-process-documentation/SKILL.md",
+      "computedHash": "851ded86d3da495547b1046d38b76fb1148c9d73a009007308223d18f6a2a493"
+    },
+    "cuphub-process-review": {
+      "source": "thumendes/cuphub-skills",
+      "sourceType": "github",
+      "skillPath": "skills/cuphub-process-review/SKILL.md",
+      "computedHash": "fe8060ecf3f242ce88d5a3c3b13eb9d0a96d1fbbf3c6abe44458c3ffadc0ab57"
+    }
+  }
+}

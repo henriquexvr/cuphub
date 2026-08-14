@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="sid-execucao-partidas" targetNamespace="http://bpmn.io/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="18.13.2">
+  <collaboration id="Collaboration_Partidas">
+    <participant id="Participant_Partidas" name="Execução de Partidas e Registro de Resultados" processRef="Process_Partidas" />
+  </collaboration>
+  <process id="Process_Partidas" isExecutable="false">
+    <laneSet id="LaneSet_Partidas">
+      <lane id="Lane_Org" name="Organizador">
+        <flowNodeRef>Start_Partidas</flowNodeRef>
+        <flowNodeRef>Task_AcessarChaveamento</flowNodeRef>
+        <flowNodeRef>Task_RegistrarPlacar</flowNodeRef>
+        <flowNodeRef>Gateway_PlacarValido</flowNodeRef>
+        <flowNodeRef>Service_AtualizarResultado</flowNodeRef>
+        <flowNodeRef>Gateway_UltimaPartida</flowNodeRef>
+        <flowNodeRef>Service_FinalizarTorneio</flowNodeRef>
+        <flowNodeRef>End_Org</flowNodeRef>
+      </lane>
+      <lane id="Lane_Part" name="Participante">
+        <flowNodeRef>Task_VisualizarChaveamento</flowNodeRef>
+        <flowNodeRef>End_Part</flowNodeRef>
+      </lane>
+    </laneSet>
+    <startEvent id="Start_Partidas" name="Início">
+      <outgoing>Flow_Start_Acessar</outgoing>
+    </startEvent>
+    <userTask id="Task_AcessarChaveamento" name="Acessar chaveamento do torneio">
+      <incoming>Flow_Start_Acessar</incoming>
+      <incoming>Flow_Loop_Acessar</incoming>
+      <outgoing>Flow_Acessar_Registrar</outgoing>
+      <outgoing>Flow_Part_Visualizar</outgoing>
+    </userTask>
+    <userTask id="Task_RegistrarPlacar" name="Registrar placar da partida">
+      <incoming>Flow_Acessar_Registrar</incoming>
+      <incoming>Flow_Invalido_Registrar</incoming>
+      <outgoing>Flow_Registrar_GW</outgoing>
+    </userTask>
+    <exclusiveGateway id="Gateway_PlacarValido" name="Placar válido?">
+      <incoming>Flow_Registrar_GW</incoming>
+      <outgoing>Flow_Invalido_Registrar</outgoing>
+      <outgoing>Flow_Valido_Atualizar</outgoing>
+    </exclusiveGateway>
+    <serviceTask id="Service_AtualizarResultado" name="Calcular vencedor e propagar para próxima rodada">
+      <incoming>Flow_Valido_Atualizar</incoming>
+      <outgoing>Flow_Atualizar_GW2</outgoing>
+    </serviceTask>
+    <exclusiveGateway id="Gateway_UltimaPartida" name="Última partida?">
+      <incoming>Flow_Atualizar_GW2</incoming>
+      <outgoing>Flow_Loop_Acessar</outgoing>
+      <outgoing>Flow_Final_Finalizar</outgoing>
+    </exclusiveGateway>
+    <serviceTask id="Service_FinalizarTorneio" name="Finalizar torneio automaticamente (status = finished)">
+      <incoming>Flow_Final_Finalizar</incoming>
+      <outgoing>Flow_Finalizar_EndOrg</outgoing>
+    </serviceTask>
+    <endEvent id="End_Org" name="Torneio finalizado">
+      <incoming>Flow_Finalizar_EndOrg</incoming>
+    </endEvent>
+    <userTask id="Task_VisualizarChaveamento" name="Visualizar chaveamento atualizado">
+      <incoming>Flow_Part_Visualizar</incoming>
+      <outgoing>Flow_Visualizar_EndPart</outgoing>
+    </userTask>
+    <endEvent id="End_Part" name="Fim">
+      <incoming>Flow_Visualizar_EndPart</incoming>
+    </endEvent>
+    <sequenceFlow id="Flow_Start_Acessar" sourceRef="Start_Partidas" targetRef="Task_AcessarChaveamento" />
+    <sequenceFlow id="Flow_Acessar_Registrar" sourceRef="Task_AcessarChaveamento" targetRef="Task_RegistrarPlacar" />
+    <sequenceFlow id="Flow_Registrar_GW" sourceRef="Task_RegistrarPlacar" targetRef="Gateway_PlacarValido" />
+    <sequenceFlow id="Flow_Invalido_Registrar" name="Não" sourceRef="Gateway_PlacarValido" targetRef="Task_RegistrarPlacar" />
+    <sequenceFlow id="Flow_Valido_Atualizar" name="Sim" sourceRef="Gateway_PlacarValido" targetRef="Service_AtualizarResultado" />
+    <sequenceFlow id="Flow_Atualizar_GW2" sourceRef="Service_AtualizarResultado" targetRef="Gateway_UltimaPartida" />
+    <sequenceFlow id="Flow_Loop_Acessar" name="Não" sourceRef="Gateway_UltimaPartida" targetRef="Task_AcessarChaveamento" />
+    <sequenceFlow id="Flow_Final_Finalizar" name="Sim" sourceRef="Gateway_UltimaPartida" targetRef="Service_FinalizarTorneio" />
+    <sequenceFlow id="Flow_Finalizar_EndOrg" sourceRef="Service_FinalizarTorneio" targetRef="End_Org" />
+    <sequenceFlow id="Flow_Part_Visualizar" sourceRef="Task_AcessarChaveamento" targetRef="Task_VisualizarChaveamento" />
+    <sequenceFlow id="Flow_Visualizar_EndPart" sourceRef="Task_VisualizarChaveamento" targetRef="End_Part" />
+  </process>
+  <bpmndi:BPMNDiagram id="BpmnDiagram_Partidas">
+    <bpmndi:BPMNPlane id="BpmnPlane_Partidas" bpmnElement="Collaboration_Partidas">
+      <bpmndi:BPMNShape id="Participant_Partidas_di" bpmnElement="Participant_Partidas" isHorizontal="true">
+        <omgdc:Bounds x="152" y="80" width="1650" height="560" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Org_di" bpmnElement="Lane_Org" isHorizontal="true">
+        <omgdc:Bounds x="182" y="80" width="1620" height="310" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Part_di" bpmnElement="Lane_Part" isHorizontal="true">
+        <omgdc:Bounds x="182" y="390" width="1620" height="250" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_Partidas_di" bpmnElement="Start_Partidas">
+        <omgdc:Bounds x="242" y="207" width="36" height="36" />
+        <bpmndi:BPMNLabel><omgdc:Bounds x="247" y="250" width="27" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AcessarChaveamento_di" bpmnElement="Task_AcessarChaveamento">
+        <omgdc:Bounds x="330" y="185" width="140" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RegistrarPlacar_di" bpmnElement="Task_RegistrarPlacar">
+        <omgdc:Bounds x="540" y="185" width="140" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_PlacarValido_di" bpmnElement="Gateway_PlacarValido" isMarkerVisible="true">
+        <omgdc:Bounds x="755" y="200" width="50" height="50" />
+        <bpmndi:BPMNLabel><omgdc:Bounds x="740" y="257" width="80" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Service_AtualizarResultado_di" bpmnElement="Service_AtualizarResultado">
+        <omgdc:Bounds x="870" y="185" width="160" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_UltimaPartida_di" bpmnElement="Gateway_UltimaPartida" isMarkerVisible="true">
+        <omgdc:Bounds x="1105" y="200" width="50" height="50" />
+        <bpmndi:BPMNLabel><omgdc:Bounds x="1090" y="257" width="80" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Service_FinalizarTorneio_di" bpmnElement="Service_FinalizarTorneio">
+        <omgdc:Bounds x="1230" y="185" width="180" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_Org_di" bpmnElement="End_Org">
+        <omgdc:Bounds x="1492" y="207" width="36" height="36" />
+        <bpmndi:BPMNLabel><omgdc:Bounds x="1470" y="250" width="80" height="27" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VisualizarChaveamento_di" bpmnElement="Task_VisualizarChaveamento">
+        <omgdc:Bounds x="330" y="455" width="140" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_Part_di" bpmnElement="End_Part">
+        <omgdc:Bounds x="542" y="477" width="36" height="36" />
+        <bpmndi:BPMNLabel><omgdc:Bounds x="551" y="520" width="19" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_Start_Acessar_di" bpmnElement="Flow_Start_Acessar">
+        <omgdi:waypoint x="278" y="225" /><omgdi:waypoint x="330" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Acessar_Registrar_di" bpmnElement="Flow_Acessar_Registrar">
+        <omgdi:waypoint x="470" y="225" /><omgdi:waypoint x="540" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Registrar_GW_di" bpmnElement="Flow_Registrar_GW">
+        <omgdi:waypoint x="680" y="225" /><omgdi:waypoint x="755" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Invalido_Registrar_di" bpmnElement="Flow_Invalido_Registrar">
+        <omgdi:waypoint x="780" y="200" /><omgdi:waypoint x="780" y="130" /><omgdi:waypoint x="610" y="130" /><omgdi:waypoint x="610" y="185" />
+        <bpmndi:BPMNLabel><omgdc:Bounds x="787" y="157" width="21" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Valido_Atualizar_di" bpmnElement="Flow_Valido_Atualizar">
+        <omgdi:waypoint x="805" y="225" /><omgdi:waypoint x="870" y="225" />
+        <bpmndi:BPMNLabel><omgdc:Bounds x="824" y="207" width="19" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Atualizar_GW2_di" bpmnElement="Flow_Atualizar_GW2">
+        <omgdi:waypoint x="1030" y="225" /><omgdi:waypoint x="1105" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Loop_Acessar_di" bpmnElement="Flow_Loop_Acessar">
+        <omgdi:waypoint x="1130" y="200" /><omgdi:waypoint x="1130" y="110" /><omgdi:waypoint x="400" y="110" /><omgdi:waypoint x="400" y="185" />
+        <bpmndi:BPMNLabel><omgdc:Bounds x="760" y="92" width="21" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Final_Finalizar_di" bpmnElement="Flow_Final_Finalizar">
+        <omgdi:waypoint x="1155" y="225" /><omgdi:waypoint x="1230" y="225" />
+        <bpmndi:BPMNLabel><omgdc:Bounds x="1174" y="207" width="19" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Finalizar_EndOrg_di" bpmnElement="Flow_Finalizar_EndOrg">
+        <omgdi:waypoint x="1410" y="225" /><omgdi:waypoint x="1492" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Part_Visualizar_di" bpmnElement="Flow_Part_Visualizar">
+        <omgdi:waypoint x="400" y="265" /><omgdi:waypoint x="400" y="455" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Visualizar_EndPart_di" bpmnElement="Flow_Visualizar_EndPart">
+        <omgdi:waypoint x="470" y="495" /><omgdi:waypoint x="542" y="495" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

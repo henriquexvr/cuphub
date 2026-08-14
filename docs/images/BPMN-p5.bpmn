@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_p5" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="18.13.2">
+  <bpmn:collaboration id="Collaboration_p5">
+    <bpmn:participant id="Participant_p5" name="Divulgação de Resultado" processRef="Process_p5" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_p5" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_p5">
+      <bpmn:lane id="Lane_Org_p5" name="Organizador">
+        <bpmn:flowNodeRef>Start_p5</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Service_TorneioFinalizado</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_AcessarDetalhe_Org</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_VerChaveamento_Org</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_Org_p5</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Part_p5" name="Participante">
+        <bpmn:flowNodeRef>Task_AcessarDetalhe_Part</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_VerChaveamento_Part</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_Part_p5</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_p5" name="Torneio finalizado pelo sistema">
+      <bpmn:outgoing>Flow_p5_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Service_TorneioFinalizado" name="Status do torneio atualizado para finished">
+      <bpmn:incoming>Flow_p5_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_p5_2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_p5_Part</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Task_AcessarDetalhe_Org" name="Acessar detalhe do torneio (campeão + chaveamento inline)">
+      <bpmn:incoming>Flow_p5_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_p5_3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_VerChaveamento_Org" name="Visualizar chaveamento completo com campeão">
+      <bpmn:incoming>Flow_p5_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_p5_EndOrg</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="End_Org_p5" name="Fim">
+      <bpmn:incoming>Flow_p5_EndOrg</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Task_AcessarDetalhe_Part" name="Acessar detalhe do torneio (campeão + chaveamento inline)">
+      <bpmn:incoming>Flow_p5_Part</bpmn:incoming>
+      <bpmn:outgoing>Flow_p5_PartChav</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_VerChaveamento_Part" name="Visualizar chaveamento completo com campeão">
+      <bpmn:incoming>Flow_p5_PartChav</bpmn:incoming>
+      <bpmn:outgoing>Flow_p5_EndPart</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="End_Part_p5" name="Fim">
+      <bpmn:incoming>Flow_p5_EndPart</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_p5_1" sourceRef="Start_p5" targetRef="Service_TorneioFinalizado" />
+    <bpmn:sequenceFlow id="Flow_p5_2" sourceRef="Service_TorneioFinalizado" targetRef="Task_AcessarDetalhe_Org" />
+    <bpmn:sequenceFlow id="Flow_p5_Part" sourceRef="Service_TorneioFinalizado" targetRef="Task_AcessarDetalhe_Part" />
+    <bpmn:sequenceFlow id="Flow_p5_3" sourceRef="Task_AcessarDetalhe_Org" targetRef="Task_VerChaveamento_Org" />
+    <bpmn:sequenceFlow id="Flow_p5_EndOrg" sourceRef="Task_VerChaveamento_Org" targetRef="End_Org_p5" />
+    <bpmn:sequenceFlow id="Flow_p5_PartChav" sourceRef="Task_AcessarDetalhe_Part" targetRef="Task_VerChaveamento_Part" />
+    <bpmn:sequenceFlow id="Flow_p5_EndPart" sourceRef="Task_VerChaveamento_Part" targetRef="End_Part_p5" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_p5">
+    <bpmndi:BPMNPlane id="BPMNPlane_p5" bpmnElement="Collaboration_p5">
+      <bpmndi:BPMNShape id="Participant_p5_di" bpmnElement="Participant_p5" isHorizontal="true">
+        <dc:Bounds x="152" y="80" width="1300" height="560" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Org_p5_di" bpmnElement="Lane_Org_p5" isHorizontal="true">
+        <dc:Bounds x="182" y="80" width="1270" height="280" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Part_p5_di" bpmnElement="Lane_Part_p5" isHorizontal="true">
+        <dc:Bounds x="182" y="360" width="1270" height="280" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_p5_di" bpmnElement="Start_p5">
+        <dc:Bounds x="232" y="202" width="36" height="36" />
+        <bpmndi:BPMNLabel><dc:Bounds x="210" y="245" width="80" height="27" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Service_TorneioFinalizado_di" bpmnElement="Service_TorneioFinalizado">
+        <dc:Bounds x="330" y="180" width="160" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AcessarDetalhe_Org_di" bpmnElement="Task_AcessarDetalhe_Org">
+        <dc:Bounds x="570" y="180" width="160" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerChaveamento_Org_di" bpmnElement="Task_VerChaveamento_Org">
+        <dc:Bounds x="810" y="180" width="160" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_Org_p5_di" bpmnElement="End_Org_p5">
+        <dc:Bounds x="1052" y="202" width="36" height="36" />
+        <bpmndi:BPMNLabel><dc:Bounds x="1061" y="245" width="19" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AcessarDetalhe_Part_di" bpmnElement="Task_AcessarDetalhe_Part">
+        <dc:Bounds x="570" y="460" width="160" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerChaveamento_Part_di" bpmnElement="Task_VerChaveamento_Part">
+        <dc:Bounds x="810" y="460" width="160" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_Part_p5_di" bpmnElement="End_Part_p5">
+        <dc:Bounds x="1052" y="482" width="36" height="36" />
+        <bpmndi:BPMNLabel><dc:Bounds x="1061" y="525" width="19" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_p5_1_di" bpmnElement="Flow_p5_1">
+        <di:waypoint x="268" y="220" /><di:waypoint x="330" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_p5_2_di" bpmnElement="Flow_p5_2">
+        <di:waypoint x="490" y="220" /><di:waypoint x="570" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_p5_Part_di" bpmnElement="Flow_p5_Part">
+        <di:waypoint x="410" y="260" /><di:waypoint x="410" y="500" /><di:waypoint x="570" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_p5_3_di" bpmnElement="Flow_p5_3">
+        <di:waypoint x="730" y="220" /><di:waypoint x="810" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_p5_EndOrg_di" bpmnElement="Flow_p5_EndOrg">
+        <di:waypoint x="970" y="220" /><di:waypoint x="1052" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_p5_PartChav_di" bpmnElement="Flow_p5_PartChav">
+        <di:waypoint x="730" y="500" /><di:waypoint x="810" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_p5_EndPart_di" bpmnElement="Flow_p5_EndPart">
+        <di:waypoint x="970" y="500" /><di:waypoint x="1052" y="500" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

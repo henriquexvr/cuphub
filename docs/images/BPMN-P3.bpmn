@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="sid-geracao-chaveamento" targetNamespace="http://bpmn.io/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="18.13.2">
+  <collaboration id="Collaboration_Chaveamento">
+    <participant id="Participant_Chaveamento" name="Geração de Chaveamento" processRef="Process_Chaveamento" />
+  </collaboration>
+  <process id="Process_Chaveamento" isExecutable="false">
+    <laneSet id="LaneSet_Chaveamento">
+      <lane id="Lane_Organizador" name="Organizador">
+        <flowNodeRef>Start_Org</flowNodeRef>
+        <flowNodeRef>Task_AcessarDetalhe</flowNodeRef>
+        <flowNodeRef>Task_SolicitarChaveamento</flowNodeRef>
+        <flowNodeRef>Service_GerarBracket</flowNodeRef>
+        <flowNodeRef>Send_DivulgarChaveamento</flowNodeRef>
+        <flowNodeRef>End_ChaveamentoGerado</flowNodeRef>
+      </lane>
+      <lane id="Lane_Participante" name="Participante">
+        <flowNodeRef>Catch_BracketDivulgado</flowNodeRef>
+        <flowNodeRef>Task_ConsultarBracket</flowNodeRef>
+        <flowNodeRef>End_Participante</flowNodeRef>
+      </lane>
+    </laneSet>
+    <startEvent id="Start_Org" name="Início"><outgoing>Flow_Start_Detalhe</outgoing></startEvent>
+    <userTask id="Task_AcessarDetalhe" name="Acessar detalhe do torneio"><incoming>Flow_Start_Detalhe</incoming><outgoing>Flow_Detalhe_Solicitar</outgoing></userTask>
+    <userTask id="Task_SolicitarChaveamento" name="Solicitar geração de chaveamento"><incoming>Flow_Detalhe_Solicitar</incoming><outgoing>Flow_Solicitar_Gerar</outgoing></userTask>
+    <serviceTask id="Service_GerarBracket" name="Gerar bracket (shuffle + byes automáticos)"><incoming>Flow_Solicitar_Gerar</incoming><outgoing>Flow_Gerar_Divulgar</outgoing><dataOutputAssociation id="DataOut_Bracket"><targetRef>DataStore_Bracket</targetRef></dataOutputAssociation></serviceTask>
+    <dataStoreReference id="DataStore_Bracket" name="Banco de Dados" />
+    <sendTask id="Send_DivulgarChaveamento" name="Divulgar chaveamento"><incoming>Flow_Gerar_Divulgar</incoming><outgoing>Flow_Divulgar_End</outgoing><outgoing>Flow_Divulgar_Catch</outgoing></sendTask>
+    <endEvent id="End_ChaveamentoGerado" name="Chaveamento divulgado"><incoming>Flow_Divulgar_End</incoming></endEvent>
+    <intermediateCatchEvent id="Catch_BracketDivulgado" name="Bracket divulgado"><incoming>Flow_Divulgar_Catch</incoming><outgoing>Flow_Catch_Consultar</outgoing><messageEventDefinition id="MsgDef_Bracket" /></intermediateCatchEvent>
+    <userTask id="Task_ConsultarBracket" name="Consultar chaveamento"><incoming>Flow_Catch_Consultar</incoming><outgoing>Flow_Consultar_End</outgoing></userTask>
+    <endEvent id="End_Participante" name="Fim"><incoming>Flow_Consultar_End</incoming></endEvent>
+    <sequenceFlow id="Flow_Start_Detalhe" sourceRef="Start_Org" targetRef="Task_AcessarDetalhe" />
+    <sequenceFlow id="Flow_Detalhe_Solicitar" sourceRef="Task_AcessarDetalhe" targetRef="Task_SolicitarChaveamento" />
+    <sequenceFlow id="Flow_Solicitar_Gerar" sourceRef="Task_SolicitarChaveamento" targetRef="Service_GerarBracket" />
+    <sequenceFlow id="Flow_Gerar_Divulgar" sourceRef="Service_GerarBracket" targetRef="Send_DivulgarChaveamento" />
+    <sequenceFlow id="Flow_Divulgar_End" sourceRef="Send_DivulgarChaveamento" targetRef="End_ChaveamentoGerado" />
+    <sequenceFlow id="Flow_Divulgar_Catch" sourceRef="Send_DivulgarChaveamento" targetRef="Catch_BracketDivulgado" />
+    <sequenceFlow id="Flow_Catch_Consultar" sourceRef="Catch_BracketDivulgado" targetRef="Task_ConsultarBracket" />
+    <sequenceFlow id="Flow_Consultar_End" sourceRef="Task_ConsultarBracket" targetRef="End_Participante" />
+  </process>
+  <bpmndi:BPMNDiagram id="BpmnDiagram_Chaveamento">
+    <bpmndi:BPMNPlane id="BpmnPlane_Chaveamento" bpmnElement="Collaboration_Chaveamento">
+      <bpmndi:BPMNShape id="Participant_Chaveamento_di" bpmnElement="Participant_Chaveamento" isHorizontal="true"><omgdc:Bounds x="160" y="80" width="1350" height="560" /><bpmndi:BPMNLabel /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Organizador_di" bpmnElement="Lane_Organizador" isHorizontal="true"><omgdc:Bounds x="190" y="80" width="1320" height="290" /><bpmndi:BPMNLabel /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Participante_di" bpmnElement="Lane_Participante" isHorizontal="true"><omgdc:Bounds x="190" y="370" width="1320" height="270" /><bpmndi:BPMNLabel /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_Org_di" bpmnElement="Start_Org"><omgdc:Bounds x="242" y="207" width="36" height="36" /><bpmndi:BPMNLabel><omgdc:Bounds x="247" y="250" width="27" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AcessarDetalhe_di" bpmnElement="Task_AcessarDetalhe"><omgdc:Bounds x="330" y="185" width="140" height="80" /><bpmndi:BPMNLabel /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SolicitarChaveamento_di" bpmnElement="Task_SolicitarChaveamento"><omgdc:Bounds x="530" y="185" width="140" height="80" /><bpmndi:BPMNLabel /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Service_GerarBracket_di" bpmnElement="Service_GerarBracket"><omgdc:Bounds x="740" y="185" width="140" height="80" /><bpmndi:BPMNLabel /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStore_Bracket_di" bpmnElement="DataStore_Bracket"><omgdc:Bounds x="800" y="310" width="50" height="50" /><bpmndi:BPMNLabel><omgdc:Bounds x="785" y="367" width="82" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Send_DivulgarChaveamento_di" bpmnElement="Send_DivulgarChaveamento"><omgdc:Bounds x="950" y="185" width="140" height="80" /><bpmndi:BPMNLabel /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_ChaveamentoGerado_di" bpmnElement="End_ChaveamentoGerado"><omgdc:Bounds x="1162" y="207" width="36" height="36" /><bpmndi:BPMNLabel><omgdc:Bounds x="1140" y="250" width="80" height="27" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Catch_BracketDivulgado_di" bpmnElement="Catch_BracketDivulgado"><omgdc:Bounds x="982" y="477" width="36" height="36" /><bpmndi:BPMNLabel><omgdc:Bounds x="960" y="520" width="80" height="27" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ConsultarBracket_di" bpmnElement="Task_ConsultarBracket"><omgdc:Bounds x="1080" y="455" width="140" height="80" /><bpmndi:BPMNLabel /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_Participante_di" bpmnElement="End_Participante"><omgdc:Bounds x="1292" y="477" width="36" height="36" /><bpmndi:BPMNLabel><omgdc:Bounds x="1300" y="520" width="19" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_Start_Detalhe_di" bpmnElement="Flow_Start_Detalhe"><omgdi:waypoint x="278" y="225" /><omgdi:waypoint x="330" y="225" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Detalhe_Solicitar_di" bpmnElement="Flow_Detalhe_Solicitar"><omgdi:waypoint x="470" y="225" /><omgdi:waypoint x="530" y="225" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Solicitar_Gerar_di" bpmnElement="Flow_Solicitar_Gerar"><omgdi:waypoint x="670" y="225" /><omgdi:waypoint x="740" y="225" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Gerar_Divulgar_di" bpmnElement="Flow_Gerar_Divulgar"><omgdi:waypoint x="880" y="225" /><omgdi:waypoint x="950" y="225" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Divulgar_End_di" bpmnElement="Flow_Divulgar_End"><omgdi:waypoint x="1090" y="225" /><omgdi:waypoint x="1162" y="225" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Divulgar_Catch_di" bpmnElement="Flow_Divulgar_Catch"><omgdi:waypoint x="1020" y="265" /><omgdi:waypoint x="1020" y="360" /><omgdi:waypoint x="1000" y="360" /><omgdi:waypoint x="1000" y="477" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Catch_Consultar_di" bpmnElement="Flow_Catch_Consultar"><omgdi:waypoint x="1018" y="495" /><omgdi:waypoint x="1080" y="495" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Consultar_End_di" bpmnElement="Flow_Consultar_End"><omgdi:waypoint x="1220" y="495" /><omgdi:waypoint x="1292" y="495" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOut_Bracket_di" bpmnElement="DataOut_Bracket"><omgdi:waypoint x="810" y="265" /><omgdi:waypoint x="810" y="310" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

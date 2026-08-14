@@ -1,0 +1,7 @@
+# Railway define a porta pública em $PORT (Caddy lê {$PORT} nativamente)
+:{$PORT:80} {
+	root * /srv
+	encode gzip
+	try_files {path} /index.html
+	file_server
+}

@@ -1,0 +1,43 @@
+github-projects
+
+# Node / React
+node_modules/
+dist/
+.vite/
+
+# Front específico
+src/front/node_modules/
+src/front/dist/
+src/front/.vite/
+
+# Java / Maven
+target/
+src/back/api/target/
+
+# IDE / workspace
+.vscode/
+.metadata/
+.plugins/
+.lock
+.log
+
+# Ambiente
+.env
+.env.local
+.env.development.local
+.env.production.local
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+PLANO-*.md
+OPENCODE.md
+
+# Config local de Spring (cada dev copia do .example)
+application.properties
+application-*.properties
+# exceção: profile de produção (sem segredos, só placeholders de env var)
+!application-prod.properties
+
+planos_implementacao/

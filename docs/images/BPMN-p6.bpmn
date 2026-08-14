@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_p6" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="18.13.2">
+  <bpmn:collaboration id="Collaboration_p6">
+    <bpmn:participant id="Participant_p6" name="Acompanhamento e Exibição de Estatísticas e Desempenho" processRef="Process_p6" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_p6" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_p6">
+      <bpmn:lane id="Lane_Org_p6" name="Organizador">
+        <bpmn:flowNodeRef>StartEvent_p6</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_SelecionarTorneio_p6</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_CarregarEstatisticas_p6</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_VisualizarEstatisticas_p6</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Filtrar_p6</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_AplicarFiltros_p6</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_GerarRelatorio_p6</bpmn:flowNodeRef>
+        <bpmn:childLaneSet id="LaneSet_org_child_p6" />
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Part_p6" name="Participante">
+        <bpmn:flowNodeRef>Activity_VisualizarDesempenho_p6</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_p6</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_p6" name="Início">
+      <bpmn:outgoing>Flow_p6_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Activity_SelecionarTorneio_p6" name="Selecionar torneio">
+      <bpmn:incoming>Flow_p6_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_p6_2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_CarregarEstatisticas_p6" name="Carregar estatísticas e dados">
+      <bpmn:incoming>Flow_p6_2</bpmn:incoming>
+      <bpmn:incoming>Flow_p6_FiltroAplicado</bpmn:incoming>
+      <bpmn:outgoing>Flow_p6_3</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_p6">
+        <bpmn:targetRef>DataStore_p6</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Activity_VisualizarEstatisticas_p6" name="Visualizar estatísticas gerais">
+      <bpmn:incoming>Flow_p6_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_p6_4</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_Filtrar_p6" name="Deseja filtrar dados?">
+      <bpmn:incoming>Flow_p6_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_p6_Sim</bpmn:outgoing>
+      <bpmn:outgoing>Flow_p6_Nao</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Activity_AplicarFiltros_p6" name="Aplicar filtros">
+      <bpmn:incoming>Flow_p6_Sim</bpmn:incoming>
+      <bpmn:outgoing>Flow_p6_FiltroAplicado</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_GerarRelatorio_p6" name="Gerar relatório de desempenho">
+      <bpmn:incoming>Flow_p6_Nao</bpmn:incoming>
+      <bpmn:outgoing>Flow_p6_5</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:dataStoreReference id="DataStore_p6" name="Banco de dados" />
+    <bpmn:userTask id="Activity_VisualizarDesempenho_p6" name="Visualizar desempenho da equipe">
+      <bpmn:incoming>Flow_p6_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_p6_6</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="EndEvent_p6" name="Fim">
+      <bpmn:incoming>Flow_p6_6</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_p6_1" sourceRef="StartEvent_p6" targetRef="Activity_SelecionarTorneio_p6" />
+    <bpmn:sequenceFlow id="Flow_p6_2" sourceRef="Activity_SelecionarTorneio_p6" targetRef="Activity_CarregarEstatisticas_p6" />
+    <bpmn:sequenceFlow id="Flow_p6_3" sourceRef="Activity_CarregarEstatisticas_p6" targetRef="Activity_VisualizarEstatisticas_p6" />
+    <bpmn:sequenceFlow id="Flow_p6_4" sourceRef="Activity_VisualizarEstatisticas_p6" targetRef="Gateway_Filtrar_p6" />
+    <bpmn:sequenceFlow id="Flow_p6_Sim" name="Sim" sourceRef="Gateway_Filtrar_p6" targetRef="Activity_AplicarFiltros_p6" />
+    <bpmn:sequenceFlow id="Flow_p6_FiltroAplicado" sourceRef="Activity_AplicarFiltros_p6" targetRef="Activity_CarregarEstatisticas_p6" />
+    <bpmn:sequenceFlow id="Flow_p6_Nao" name="Não" sourceRef="Gateway_Filtrar_p6" targetRef="Activity_GerarRelatorio_p6" />
+    <bpmn:sequenceFlow id="Flow_p6_5" sourceRef="Activity_GerarRelatorio_p6" targetRef="Activity_VisualizarDesempenho_p6" />
+    <bpmn:sequenceFlow id="Flow_p6_6" sourceRef="Activity_VisualizarDesempenho_p6" targetRef="EndEvent_p6" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_p6">
+    <bpmndi:BPMNPlane id="BPMNPlane_p6" bpmnElement="Collaboration_p6">
+      <bpmndi:BPMNShape id="Participant_p6_di" bpmnElement="Participant_p6" isHorizontal="true">
+        <dc:Bounds x="152" y="80" width="2150" height="580" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Org_p6_di" bpmnElement="Lane_Org_p6" isHorizontal="true">
+        <dc:Bounds x="182" y="80" width="2120" height="330" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Part_p6_di" bpmnElement="Lane_Part_p6" isHorizontal="true">
+        <dc:Bounds x="182" y="410" width="2120" height="250" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_p6_di" bpmnElement="StartEvent_p6">
+        <dc:Bounds x="232" y="222" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="232" y="265" width="36" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_SelecionarTorneio_p6_di" bpmnElement="Activity_SelecionarTorneio_p6">
+        <dc:Bounds x="330" y="200" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_CarregarEstatisticas_p6_di" bpmnElement="Activity_CarregarEstatisticas_p6">
+        <dc:Bounds x="510" y="200" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_VisualizarEstatisticas_p6_di" bpmnElement="Activity_VisualizarEstatisticas_p6">
+        <dc:Bounds x="700" y="200" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Filtrar_p6_di" bpmnElement="Gateway_Filtrar_p6" isMarkerVisible="true">
+        <dc:Bounds x="895" y="215" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="876" y="272" width="88" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_AplicarFiltros_p6_di" bpmnElement="Activity_AplicarFiltros_p6">
+        <dc:Bounds x="700" y="320" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_GerarRelatorio_p6_di" bpmnElement="Activity_GerarRelatorio_p6">
+        <dc:Bounds x="1030" y="200" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStore_p6_di" bpmnElement="DataStore_p6">
+        <dc:Bounds x="535" y="335" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="520" y="392" width="80" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_VisualizarDesempenho_p6_di" bpmnElement="Activity_VisualizarDesempenho_p6">
+        <dc:Bounds x="1220" y="480" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_p6_di" bpmnElement="EndEvent_p6">
+        <dc:Bounds x="1402" y="502" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1409" y="545" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_p6_1_di" bpmnElement="Flow_p6_1">
+        <di:waypoint x="268" y="240" />
+        <di:waypoint x="330" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_p6_2_di" bpmnElement="Flow_p6_2">
+        <di:waypoint x="430" y="240" />
+        <di:waypoint x="510" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_p6_3_di" bpmnElement="Flow_p6_3">
+        <di:waypoint x="610" y="240" />
+        <di:waypoint x="700" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_p6_4_di" bpmnElement="Flow_p6_4">
+        <di:waypoint x="800" y="240" />
+        <di:waypoint x="895" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_p6_Sim_di" bpmnElement="Flow_p6_Sim">
+        <di:waypoint x="920" y="265" />
+        <di:waypoint x="920" y="360" />
+        <di:waypoint x="800" y="360" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="928" y="308" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_p6_FiltroAplicado_di" bpmnElement="Flow_p6_FiltroAplicado">
+        <di:waypoint x="700" y="360" />
+        <di:waypoint x="560" y="360" />
+        <di:waypoint x="560" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_p6_Nao_di" bpmnElement="Flow_p6_Nao">
+        <di:waypoint x="945" y="240" />
+        <di:waypoint x="1030" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="970" y="222" width="21" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_p6_5_di" bpmnElement="Flow_p6_5">
+        <di:waypoint x="1130" y="240" />
+        <di:waypoint x="1190" y="240" />
+        <di:waypoint x="1190" y="520" />
+        <di:waypoint x="1220" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_p6_6_di" bpmnElement="Flow_p6_6">
+        <di:waypoint x="1320" y="520" />
+        <di:waypoint x="1402" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_p6_di" bpmnElement="DataOutputAssociation_p6">
+        <di:waypoint x="560" y="280" />
+        <di:waypoint x="560" y="335" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

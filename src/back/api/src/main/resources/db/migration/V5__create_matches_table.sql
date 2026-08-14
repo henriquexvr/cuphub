@@ -1,0 +1,20 @@
+CREATE TABLE matches (
+    id VARCHAR(36) NOT NULL PRIMARY KEY,
+    tournament_id VARCHAR(36) NOT NULL,
+    round INT NOT NULL,
+    position INT NOT NULL,
+    home_team_id VARCHAR(36),
+    away_team_id VARCHAR(36),
+    home_score INT,
+    away_score INT,
+    scheduled_at TIMESTAMP,
+    notes TEXT,
+    status ENUM('scheduled', 'finished') NOT NULL DEFAULT 'scheduled',
+    winner_id VARCHAR(36),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_match_tournament FOREIGN KEY (tournament_id) REFERENCES tournaments(id) ON DELETE CASCADE,
+    CONSTRAINT fk_match_home FOREIGN KEY (home_team_id) REFERENCES teams(id) ON DELETE SET NULL,
+    CONSTRAINT fk_match_away FOREIGN KEY (away_team_id) REFERENCES teams(id) ON DELETE SET NULL,
+    CONSTRAINT fk_match_winner FOREIGN KEY (winner_id) REFERENCES teams(id) ON DELETE SET NULL
+);
