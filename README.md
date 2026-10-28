@@ -102,11 +102,24 @@ Acesso de demonstração (senha `12345678`): `admin@cuphub.com` (admin), `robert
 * **Slides (PDF):** [presentation/CupHub.pdf](presentation/CupHub.pdf)
 * **Vídeo de demonstração:** [docs/video/CupHub-demo.mp4](docs/video/CupHub-demo.mp4)
 
-## Histórico de versões
+## Uso de IA no desenvolvimento
 
-* 0.1.1
-    * CHANGE: Atualização das documentações. Código permaneceu inalterado.
-* 0.1.0
-    * Implementação da funcionalidade X pertencente ao processo P.
-* 0.0.1
-    * Trabalhando na modelagem do processo de negócio.
+O CupHub foi desenvolvido com apoio de agentes de IA para a implementação, seguindo um fluxo guiado por contexto em que a modelagem e as decisões de projeto eram feitas pelo time.
+
+### Fluxo de trabalho
+
+1. **Modelagem:** o processo de negócio e os requisitos eram modelados pelo grupo.
+2. **Issue:** cada funcionalidade virava uma issue no GitHub, escrita a partir da modelagem de processos e dos requisitos.
+3. **Plano de implementação:** da issue, montávamos um arquivo `.md` descrevendo o que deveria ser feito (escopo, regras de negócio e critérios esperados).
+4. **Implementação com IA:** esse arquivo era passado como contexto ao agente, que implementava seguindo o plano.
+5. **Commit individual:** cada integrante era responsável por fazer o commit da sua parte, revisando o que foi gerado antes de integrá-lo.
+
+### O que era feito pelo time
+
+* Modelagem de processos, levantamento de requisitos e definição do escopo de cada issue.
+* Escrita dos planos que direcionavam o agente.
+* Revisão e integração do código gerado.
+
+### Aprendizados
+
+O principal ponto foi que a qualidade da saída dependia da qualidade do contexto: issues e planos bem especificados produziram implementações mais aderentes aos requisitos. Foi uma forma inicial de trabalhar com IA, baseada em contexto manual por tarefa.
