@@ -111,8 +111,9 @@ O CupHub foi desenvolvido com apoio de agentes de IA para a implementação, seg
 1. **Modelagem:** o processo de negócio e os requisitos eram modelados pelo grupo.
 2. **Issue:** cada funcionalidade virava uma issue no GitHub, escrita a partir da modelagem de processos e dos requisitos.
 3. **Plano de implementação:** da issue, montávamos um arquivo `.md` descrevendo o que deveria ser feito (escopo, regras de negócio e critérios esperados).
-4. **Implementação com IA:** esse arquivo era passado como contexto ao agente, que implementava seguindo o plano.
-5. **Commit individual:** cada integrante era responsável por fazer o commit da sua parte, revisando o que foi gerado antes de integrá-lo.
+4. **Enriquecer o prompt** Nessa etapa de planejamento usamos a skill **Superpowers**, em especial as sub-skills de *brainstorming* e de *perguntas*, para refinar e enriquecer o contexto antes de pedir a implementação.
+5. **Implementação com IA:** esse arquivo era passado como contexto ao agente, que implementava seguindo o plano.
+6. **Commit individual:** cada integrante era responsável por fazer o commit da sua parte, revisando o que foi gerado antes de integrá-lo.
 
 ### O que era feito pelo time
 
